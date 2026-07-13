@@ -1,0 +1,234 @@
+/* ── Page ── */
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  background: #161412;
+  color: #e6ddd2;
+}
+
+/* ── SVG noise texture ── */
+
+.noise {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Image banner ── */
+
+.banner {
+  position: relative;
+  width: 100%;
+  height: 45vh;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+.bannerImg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bannerOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgb(22 20 18 / 0.3) 0%,
+      rgb(22 20 18 / 0.15) 40%,
+      rgb(22 20 18 / 0.65) 75%,
+      #161412 100%
+    );
+}
+
+.bannerContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.bannerContentInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+.bannerHeading {
+  font-family: "ZCOOL XiaoWei", "Noto Serif SC", serif;
+  font-size: clamp(36px, 7vw, 64px);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: #e6ddd2;
+  line-height: 1.15;
+}
+
+/* ── Wrapper ── */
+
+.wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 24px 120px;
+}
+
+/* ── Bento grid ── */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 200px;
+  gap: 14px;
+}
+
+/* ── Card base ── */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+  background: #1e1c19;
+  border: 1px solid #2d2a26;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.4s ease,
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    500px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(230 221 210 / 0.06),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.card:hover {
+  border-color: #4a4540;
+  transform: translateY(-2px);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Card content z-order above glow */
+.card > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Number ── */
+
+.num {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: #7d7668;
+  margin-bottom: 12px;
+}
+
+/* ── Card title ── */
+
+.cardTitle {
+  font-family: "Noto Serif SC", "Source Han Serif SC", serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #e6ddd2;
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+
+/* ── Card description ── */
+
+.cardDesc {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: #b0a594;
+  max-width: 32ch;
+}
+
+/* ── Bento spans ── */
+
+.spanHero {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.spanHero .cardTitle {
+  font-size: 28px;
+}
+
+.spanHero .cardDesc {
+  font-size: 14px;
+}
+
+.spanWide {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.spanSm {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 768px) {
+  .banner {
+    height: 35vh;
+    min-height: 240px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 180px;
+    gap: 12px;
+  }
+
+  .spanHero,
+  .spanWide,
+  .spanSm {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .spanHero .cardTitle {
+    font-size: 20px;
+  }
+
+  .spanHero .cardDesc {
+    font-size: 13px;
+  }
+
+  .wrapper {
+    padding: 48px 20px 80px;
+  }
+}

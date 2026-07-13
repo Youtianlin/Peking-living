@@ -1,65 +1,200 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import SplashScreen from "@/components/SplashScreen";
+import GuideIndex from "@/components/GuideIndex";
+import Footer from "@/components/Footer";
+
+const navLinks = [
+  { label: "索引", href: "/" },
+  { label: "美食", href: "/food" },
+  { label: "气候", href: "/climate" },
+  { label: "生活", href: "/living" },
+  { label: "景点", href: "/travel" },
+  { label: "求学", href: "/study" },
+  { label: "文化", href: "/culture" },
+];
 
 export default function Home() {
+  const [entered, setEntered] = useState(() => {
+    if (typeof window !== "undefined") return sessionStorage.getItem("entered") === "true";
+    return false;
+  });
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  if (!entered) {
+    return <SplashScreen onEnter={() => { sessionStorage.setItem("entered", "true"); setEntered(true); }} />;
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <>
+      {/* Responsive breakpoints */}
+      <style>{`
+        @keyframes fadeIn { to { opacity: 1; } }
+        .nav-desktop { display: flex; }
+        .nav-hamburger { display: none; }
+        @media (max-width: 768px) {
+          .nav-desktop { display: none !important; }
+          .nav-hamburger { display: flex !important; }
+        }
+      `}</style>
+
+      {/* Mobile menu overlay */}
+      {menuOpen && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 60,
+            background: "#161412",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 32,
+          }}
+        >
+          {navLinks.map((l, i) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              onClick={() => setMenuOpen(false)}
+              style={{
+                fontFamily: '"Noto Serif SC", serif',
+                fontSize: 24,
+                color: "#e6ddd2",
+                textDecoration: "none",
+                letterSpacing: "0.06em",
+                opacity: 0,
+                animation: `fadeIn 0.4s ${i * 0.06}s forwards`,
+              }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+              {l.label}
+            </Link>
+          ))}
+          <button
+            onClick={() => setMenuOpen(false)}
+            style={{
+              position: "absolute",
+              top: 20,
+              right: 24,
+              background: "none",
+              border: "none",
+              color: "#e6ddd2",
+              fontSize: 28,
+              cursor: "pointer",
+              padding: 8,
+              lineHeight: 1,
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+            ×
+          </button>
+        </div>
+      )}
+
+      {/* Fixed header bar */}
+      <header
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: 56,
+          paddingLeft: 24,
+          paddingRight: 24,
+          background: scrolled
+            ? "rgba(22, 20, 18, 0.82)"
+            : "rgba(22, 20, 18, 0.55)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+          borderBottom: scrolled
+            ? "1px solid rgba(45, 42, 38, 0.6)"
+            : "1px solid transparent",
+          transition: "background 0.5s ease, border-bottom 0.5s ease",
+        }}
+      >
+        <Link
+          href="/"
+          style={{
+            fontFamily: '"Noto Serif SC", serif',
+            fontSize: 15,
+            fontWeight: 600,
+            letterSpacing: "0.03em",
+            color: "#e6ddd2",
+            textDecoration: "none",
+            whiteSpace: "nowrap",
+          }}
+        >
+          湖南人北京生存指南
+        </Link>
+
+        {/* Desktop nav */}
+        <nav
+          className="nav-desktop"
+          style={{ alignItems: "center", gap: 24 }}
+        >
+          {navLinks.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              style={{
+                fontSize: 13,
+                letterSpacing: "0.04em",
+                color: "#a39788",
+                textDecoration: "none",
+                transition: "color 0.3s ease",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = "#e6ddd2"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "#a39788"; }}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Mobile hamburger */}
+        <button
+          className="nav-hamburger"
+          onClick={() => setMenuOpen(true)}
+          style={{
+            flexDirection: "column",
+            gap: 5,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: 4,
+          }}
+        >
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              style={{
+                display: "block",
+                width: 20,
+                height: 1.5,
+                background: "#e6ddd2",
+                borderRadius: 1,
+              }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+          ))}
+        </button>
+      </header>
+
+      <GuideIndex />
+
+      <Footer />
+    </>
   );
 }
