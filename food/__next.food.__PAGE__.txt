@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[84918,["/_next/static/chunks/05-c3ty_6dwfk.js","/_next/static/chunks/2im7c515bo69p.js","/_next/static/chunks/03359q9x40i6u.js","/_next/static/chunks/162r9spurq_ms.js"],"FoodIndexClient"]
+3:I[97367,["/_next/static/chunks/05-c3ty_6dwfk.js","/_next/static/chunks/2im7c515bo69p.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"articles":[{"slug":"peking-canteen","title":"北京大学食堂测评","summary":"北京大学真没什么好吃的","cover":"/bg/food_card.jpg","date":"2026-07-13"}]}],[["$","script","script-0",{"src":"/_next/static/chunks/03359q9x40i6u.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/162r9spurq_ms.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"8hhRxXhXn6BjPEPwTuycH"}
+5:null
